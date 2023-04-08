@@ -13,10 +13,11 @@ public class BlackjackApp {
 		Player dealer = new Dealer();
 		Player player = new Player();
 		
-		((Dealer) dealer).dealCards(player);
-		
-		((Dealer) dealer).viewKnownCards(dealer);
-		player.viewCards(player);
+		((Dealer) dealer).dealCards(player);	
+
+		((Dealer) dealer).viewKnownCards();
+		System.out.print("Player's cards: ");
+		player.viewCards();
 		// A Dealer will deal cards
 		boolean adequateDeck = true;
 		do {

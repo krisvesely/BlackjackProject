@@ -17,22 +17,14 @@ public class Dealer extends Player {
 	};
 	
 	public void dealAll(Player player) {
-//		sgetHand().add(getDeck().dealCard());
-//		player.getHand().add(getDeck().dealCard());
+		getHand().addCard(deck.dealCard());
+		player.getHand().addCard(deck.dealCard());
 	}
 	
-	public void viewKnownCards(Player dealer) {
-//		System.out.println(dealer.getHand().get(1).toString());
-//		System.out.println("Hand value: " + ((BlackjackHand) getHand()).getSingleCardValue(1));
+	public void viewKnownCards() {
+		System.out.println("Dealer's visible card: " + ((BlackjackHand) getHand()).getCard(1).toString());
+		System.out.println("Dealer's visible hand value: " + ((BlackjackHand) getHand()).getSingleCardValue(1));
 	}
-	
-//	public void viewCards() {
-//		for (Card card : hand) {
-//			System.out.println(card.toString());
-//			System.out.println("Hand value: " + ((BlackjackHand) hand).getHandValue());
-//		}
-//	}
-	
 	
 	public Deck getDeck() {
 		return deck;

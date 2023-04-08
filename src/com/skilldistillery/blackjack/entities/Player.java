@@ -10,11 +10,11 @@ public class Player {
 		setHand();
 	}
 	
-	public void viewCards(Player player) {
-//		for (Card card : player.getHand()) {
-//			System.out.println(card.toString());
-//			System.out.println("Hand value: " + ((BlackjackHand) hand).getHandValue());
-//		}
+	public void viewCards() {
+		for (Card card : ((BlackjackHand) hand).getHand()) {
+			System.out.print(card.toString() + ", ");	
+		}
+		System.out.println("\nPlayer's hand value: " + ((BlackjackHand) hand).getHandValue());
 	}
 
 	public BlackjackHand getHand() {

@@ -35,5 +35,10 @@ public class BlackjackHand extends Hand {
 		boolean isBust = false;
 		return isBust;
 	}
+	
+	@Override
+	public List<Card> getHand() {
+		return hand;
+	}
 
 }
