@@ -11,19 +11,19 @@ public class Dealer extends Player {
 		deck.shuffle();
 	}
 	
-	public void dealCards(Player player) {
-		dealAll(player);
-		dealAll(player);
+	public void dealInitialCards(Player user) {
+		dealAll(user);
+		dealAll(user);
 	};
 	
-	public void dealAll(Player player) {
-		getHand().addCard(deck.dealCard());
-		player.getHand().addCard(deck.dealCard());
+	public void dealAll(Player user) {
+		getBlackjackHand().addCard(deck.dealCard());
+		user.getBlackjackHand().addCard(deck.dealCard());
 	}
 	
 	public void viewKnownCards() {
-		System.out.println("Dealer's visible card: " + ((BlackjackHand) getHand()).getCard(1).toString());
-		System.out.println("Dealer's visible hand value: " + ((BlackjackHand) getHand()).getSingleCardValue(1));
+		System.out.println("Dealer's visible card: " + getBlackjackHand().getCard(1).toString());
+		System.out.println("Dealer's visible hand value: " + getBlackjackHand().getSingleCardValue(1));
 	}
 	
 	public Deck getDeck() {

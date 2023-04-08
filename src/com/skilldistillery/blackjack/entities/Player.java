@@ -4,28 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-	private BlackjackHand hand;
+	private BlackjackHand bHand;
 	
 	public Player() {
-		setHand();
+		setBlackjackHand();
 	}
 	
 	public void viewCards() {
-		for (Card card : ((BlackjackHand) hand).getHand()) {
+		for (Card card : (bHand.getHand())) {
 			System.out.print(card.toString() + ", ");	
 		}
-		System.out.println("\nPlayer's hand value: " + ((BlackjackHand) hand).getHandValue());
+		System.out.println("\nPlayer's hand value: " + bHand.getHandValue());
 	}
 
-	public BlackjackHand getHand() {
-		return hand;
+	public BlackjackHand getBlackjackHand() {
+		return bHand;
 	}
 
-	public void setHand() {
-		hand = new BlackjackHand();
-	}
-
-	
-	
-	
+	public void setBlackjackHand() {
+		bHand = new BlackjackHand();
+	}	
 }

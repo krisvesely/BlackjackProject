@@ -25,20 +25,25 @@ public class BlackjackHand extends Hand {
 		return handValue;
 	}
 	
-	public boolean isBlackjack(Player player) {
+	public boolean isBlackjack() {
 		boolean isBlackjack = false;
-//		if (player.getHandValue() )
+		if (getHandValue() == 21) {
+			isBlackjack = true;
+		}
 		return isBlackjack;
 	}
 	
 	public boolean isBust() {
 		boolean isBust = false;
+		if (getHandValue() > 21) {
+			isBust = true;
+		}
 		return isBust;
 	}
 	
-	@Override
-	public List<Card> getHand() {
-		return hand;
-	}
+//	@Override
+//	public List<Card> getHand() {
+//		return hand;
+//	}
 
 }
