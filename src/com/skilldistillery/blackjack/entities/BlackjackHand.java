@@ -5,17 +5,17 @@ import java.util.List;
 
 public class BlackjackHand extends Hand {
 	private int handValue;
-	
+
 	public BlackjackHand() {
 		super();
 		handValue = 0;
 	}
-	
+
 	public int getSingleCardValue(int handIndex) {
 		int handValue = getHand().get(handIndex).getValue();
 		return handValue;
 	}
-	
+
 	@Override
 	public int getHandValue() {
 		int handValue = 0;
@@ -24,7 +24,7 @@ public class BlackjackHand extends Hand {
 		}
 		return handValue;
 	}
-	
+
 	public boolean isBlackjack() {
 		boolean isBlackjack = false;
 		if (getHandValue() == 21) {
@@ -32,7 +32,7 @@ public class BlackjackHand extends Hand {
 		}
 		return isBlackjack;
 	}
-	
+
 	public boolean isBust() {
 		boolean isBust = false;
 		if (getHandValue() > 21) {
@@ -40,7 +40,7 @@ public class BlackjackHand extends Hand {
 		}
 		return isBust;
 	}
-	
+
 //	@Override
 //	public List<Card> getHand() {
 //		return hand;

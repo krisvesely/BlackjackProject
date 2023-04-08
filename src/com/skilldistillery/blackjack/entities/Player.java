@@ -5,16 +5,16 @@ import java.util.List;
 
 public class Player {
 	private BlackjackHand bHand;
-	
+
 	public Player() {
 		setBlackjackHand();
 	}
-	
+
 	public void viewCards() {
 		for (Card card : (bHand.getHand())) {
-			System.out.print(card.toString() + ", ");	
+			System.out.print(card.toString() + ", ");
 		}
-		System.out.println("\nPlayer's hand value: " + bHand.getHandValue());
+		System.out.println("\nTotal hand value: " + bHand.getHandValue());
 	}
 
 	public BlackjackHand getBlackjackHand() {
@@ -23,5 +23,5 @@ public class Player {
 
 	public void setBlackjackHand() {
 		bHand = new BlackjackHand();
-	}	
+	}
 }

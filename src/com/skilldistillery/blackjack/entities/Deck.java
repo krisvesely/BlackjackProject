@@ -6,22 +6,22 @@ import java.util.List;
 
 public class Deck {
 	private List<Card> deck;
-	
+
 	public Deck() {
 		setDeck(buildDeck());
 	}
-	
+
 	public List<Card> buildDeck() {
 		deck = new ArrayList<Card>();
-			for (Suit suit : Suit.values()) {
-				for (Rank rank : Rank.values()) {
-					Card aCard = new Card(suit, rank);
-					deck.add(aCard);
-				}
+		for (Suit suit : Suit.values()) {
+			for (Rank rank : Rank.values()) {
+				Card aCard = new Card(suit, rank);
+				deck.add(aCard);
 			}
+		}
 		return deck;
 	}
-	
+
 	public int checkDeckSize() {
 		return deck.size();
 	}
@@ -30,11 +30,11 @@ public class Deck {
 		Card dealtCard = deck.remove(0);
 		return dealtCard;
 	}
-	
+
 	public void shuffle() {
 		Collections.shuffle(deck);
 	}
-	
+
 //	public List<Card> getDeck() {
 //		return deck;
 //	}
@@ -42,6 +42,5 @@ public class Deck {
 	public void setDeck(List<Card> deck) {
 		this.deck = deck;
 	}
-	
-	
+
 }

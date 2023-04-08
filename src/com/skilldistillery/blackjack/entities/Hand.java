@@ -5,20 +5,19 @@ import java.util.List;
 
 public abstract class Hand {
 	protected List<Card> hand; ////////////////////////////////////////////////////////
-	
+
 	public Hand() {
 		hand = new ArrayList<>();
 	}
-	
+
 	public void addCard(Card card) {
 		hand.add(card);
 	}
+
 	public void clear() {
-		for (Card card : hand) {
-			hand.remove(card);
-		}
+		hand.clear();
 	}
-	
+
 	public abstract int getHandValue();
 
 	@Override
@@ -33,10 +32,10 @@ public abstract class Hand {
 	public void setHand(List<Card> hand) {
 		this.hand = hand;
 	}
-	
+
 	public Card getCard(int handIndex) {
 		Card cardAtIndex = hand.get(handIndex);
 		return cardAtIndex;
 	}
-	
+
 }
