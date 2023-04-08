@@ -22,7 +22,7 @@ public class Dealer extends Player {
 	}
 
 	public void viewKnownCards() {
-		System.out.println("\nDealer's visible (second dealt) card: " + getBlackjackHand().getCard(1).toString());
+		System.out.println("\n> Dealer's visible (second dealt) card: " + getBlackjackHand().getCard(1).toString());
 		System.out.println("Dealer's visible hand value: " + getBlackjackHand().getSingleCardValue(1));
 	}
 

@@ -13,12 +13,11 @@ public class BlackjackApp {
 
 	public void run() {
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Welcome to the Blackjack App!");
-		System.out.println("\nAt the start of each round, the Dealer will deal "
-				+ "two cards each to you and to themself.\n"
-				+ "Both of your cards will be dealt face up, but only the Dealer's second "
-				+ "card will be dealt face up.\n" + "Throughout play, Ace cards will have a fixed value of 11 (high).");
-
+		System.out.println("* * * * * * * * * * * * * * * * *    Welcome to the Blackjack App!   * * * * * * * * * * * * * * * * *");
+		System.out.println("* *    At the start of each round, the Dealer will deal two cards each, to you and to themself.    * *");
+		System.out.println("* Both of your cards will be dealt face up, but only the Dealer's second card will be dealt face up. *");
+		System.out.println("* * * * * * * *   Throughout play, Ace cards will have a fixed value of 11 (high).   * * * * * * * * *");
+				
 		Player theDealer = new Dealer();
 		Player user = new Player();
 
@@ -26,12 +25,14 @@ public class BlackjackApp {
 		do {
 			initialDeal(theDealer, user);
 			if (user.getBlackjackHand().isBlackjack()) {
-				System.out.println("Congratulations! You won the first round!");
+				System.out.println("\n* * * Blackjack! Congratulations - you won this round!");
 			} else if (user.getBlackjackHand().isBlackjack()) {
-				System.out.println("Bust! Your hand exceeds 21. Round over.");
+				System.out.println("\n* * * Busted! Your hand exceeds 21. Round over.");
 			} else {
-				hitOrStay(theDealer, user, sc);
+				boolean ifStay = hitOrStay(theDealer, user, sc);
+				if (ifStay) {
 				dealersTurn(theDealer);
+				}
 				if (theDealer.getBlackjackHand().getHandValue() < 21 && user.getBlackjackHand().getHandValue() < 21) {
 					determineWinner(theDealer, user);
 				}
@@ -49,14 +50,15 @@ public class BlackjackApp {
 	public void initialDeal(Player theDealer, Player user) {
 		System.out.println("\nThe Dealer will now deal the first two cards to each Player.");
 		((Dealer) theDealer).dealInitialCards(user);
-		System.out.print("\nPlayer's hand: ");
+		System.out.print("\n> Your hand: ");
 		user.viewCards();
 		((Dealer) theDealer).viewKnownCards();
 
 	}
 
-	public void hitOrStay(Player theDealer, Player user, Scanner sc) {
-		boolean notStay = true;
+	public boolean hitOrStay(Player theDealer, Player user, Scanner sc) {
+		boolean stillInPlay = true;
+		boolean keepLooping = true;
 		do {
 			System.out.println("\nDo you want to ...\n" + "1. Hit (receive another card from the deck) or, \n"
 					+ "2. Stay (surrender turn to the Dealer)");
@@ -67,33 +69,40 @@ public class BlackjackApp {
 				switch (userResponse) {
 				case "1":
 				case "'1'":
+					System.out.println("\nDealing ...");
 					Card newUserCard = ((Dealer) theDealer).getDeck().dealCard();
 					user.getBlackjackHand().addCard(newUserCard);
-					System.out.print("Player's hand: ");
+					System.out.print("> Your hand: ");
 					user.viewCards();
 					validResponse = true;
 					break;
 				case "2":
 				case "'2'":
-					notStay = false;
+					keepLooping = false;
 					validResponse = true;
 					break;
 				default:
-					System.out.println("Invalid response.");
+					System.out.println("\nInvalid response.");
 				}
 				sc.nextLine();
 			} while (!validResponse);
-
-			if (user.getBlackjackHand().isBust()) {
-				System.out.println("Oh no, you busted your deck!");
-				notStay = false;
+			if (user.getBlackjackHand().isBlackjack()) {
+				System.out.println("\n* * * Blackjack! You won this round!");
+				stillInPlay = false;
+				keepLooping = false;
 			}
-		} while (notStay);
+			else if (user.getBlackjackHand().isBust()) {
+				System.out.println("\n* * * Oh no, you busted your hand! The Dealer wins this round.");
+				stillInPlay = false;
+				keepLooping = false;
+			}
+		} while (keepLooping);
+	return stillInPlay;
 	}
 
 	public void dealersTurn(Player theDealer) {
 		System.out.println("\nHere's the Dealer's complete hand as dealt:");
-		System.out.print("Dealer's hand: ");
+		System.out.print("> Dealer's hand: ");
 		theDealer.viewCards();
 		boolean underSeventeen = true;
 		do {
@@ -104,10 +113,14 @@ public class BlackjackApp {
 						"\nSince the Dealer's hand value is less than 17, " + "the Dealer will draw another card.");
 				Card newDealerCard = ((Dealer) theDealer).getDeck().dealCard();
 				theDealer.getBlackjackHand().addCard(newDealerCard);
-				System.out.print("Dealer's hand: ");
+				System.out.print("> Dealer's hand: ");
 				theDealer.viewCards();
 				if (theDealer.getBlackjackHand().getHandValue() > 21) {
-					System.out.println("Bust! Your hand exceeds 21. Round over.");
+					System.out.println("* * * The Dealer busted their hand. You win this round!");
+					underSeventeen = false;
+				}
+				else if (theDealer.getBlackjackHand().getHandValue() == 21) {
+					System.out.println("\n* * * The Dealer has Blackjack! You lost this round.");
 					underSeventeen = false;
 				}
 			}
@@ -115,15 +128,15 @@ public class BlackjackApp {
 	}
 
 	public void determineWinner(Player theDealer, Player user) {
-		System.out.println("\nLet's compare hands.");
+		System.out.println("\nLet's compare hands ...");
 		int dealerHandValue = theDealer.getBlackjackHand().getHandValue();
 		int userHandValue = user.getBlackjackHand().getHandValue();
 		if (userHandValue > dealerHandValue) {
-			System.out.println("Congratulations! You won this round!");
+			System.out.println("* * * Congratulations! You won this round!");
 		} else if (dealerHandValue > userHandValue) {
-			System.out.println("The Dealer wins this round. Better luck next time!");
+			System.out.println("* * * The Dealer wins this round. Better luck next time!");
 		} else {
-			System.out.println("It's a tie. Round over.");
+			System.out.println("* * * It's a tie. Round over.");
 		}
 	}
 
@@ -131,7 +144,7 @@ public class BlackjackApp {
 		if (((Dealer) theDealer).getDeck().checkDeckSize() > 6) {
 			boolean validResponse = false;
 			do {
-				System.out.println("Do you want to play another round? Y/N: ");
+				System.out.print("Do you want to play another round? Y/N: ");
 				String userResponse = sc.next();
 				switch (userResponse) {
 				case "Y":
@@ -155,7 +168,7 @@ public class BlackjackApp {
 				sc.nextLine();
 			} while (!validResponse);
 		} else {
-			System.out.println("There aren't enough cards in the deck to continue the game.");
+			System.out.println("\nThere aren't enough cards in the deck to continue the game.");
 			isPlaying = false;
 		}
 		return isPlaying;

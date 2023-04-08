@@ -11,8 +11,13 @@ public class Player {
 	}
 
 	public void viewCards() {
-		for (Card card : (bHand.getHand())) {
-			System.out.print(card.toString() + ", ");
+		for (int cardIndex =0; cardIndex < bHand.getHand().size(); cardIndex++) {
+			if ((cardIndex + 1) < bHand.getHand().size()) {
+			System.out.print(getBlackjackHand().getCard(cardIndex).toString() + ", ");
+			}
+			else {
+			System.out.print(getBlackjackHand().getCard(cardIndex).toString());	
+			}
 		}
 		System.out.println("\nTotal hand value: " + bHand.getHandValue());
 	}
