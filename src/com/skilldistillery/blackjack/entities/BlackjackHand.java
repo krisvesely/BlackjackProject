@@ -4,20 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BlackjackHand extends Hand {
-	private List<Card> hand;
-	private Deck deck;
+	private int handValue;
 	
 	public BlackjackHand() {
-		hand = new ArrayList<>();
-		deck = new Deck();
+		super();
+		handValue = 0;
+	}
+	
+	public int getSingleCardValue(int handIndex) {
+		int handValue = getHand().get(handIndex).getValue();
+		return handValue;
 	}
 	
 	@Override
-	public int getHandValue(Player player) {
+	public int getHandValue() {
 		int handValue = 0;
-//		for (Card card : hand) {
-//			handValue += card.getValue();
-//		}
+		for (Card card : getHand()) {
+			handValue += card.getValue();
+		}
 		return handValue;
 	}
 	
@@ -32,20 +36,4 @@ public class BlackjackHand extends Hand {
 		return isBust;
 	}
 
-	public List<Card> getHand() {
-		return hand;
-	}
-
-	public void setHand(List<Card> hand) {
-		this.hand = hand;
-	}
-
-	public Deck getDeck() {
-		return deck;
-	}
-
-	public void setDeck(Deck deck) {
-		this.deck = deck;
-	}
-	
 }

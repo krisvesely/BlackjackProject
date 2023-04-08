@@ -17,7 +17,7 @@ public class DealerTester {
 		Scanner sc = new Scanner(System.in);
 		Deck dealersDeck = new Deck();
 //		int numCardsInDeck = dealersDeck.checkDeckSize();
-		dealersDeck.shuffle();
+//		dealersDeck.shuffle();
 		
 		List<Card> hand = new ArrayList<>();
 		int reqCardQty = 0;

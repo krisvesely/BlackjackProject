@@ -11,7 +11,7 @@ public abstract class Hand {
 	}
 	
 	public void addCard(Card card) {
-		
+		hand.add(card);
 	}
 	public void clear() {
 		for (Card card : hand) {
@@ -19,11 +19,19 @@ public abstract class Hand {
 		}
 	}
 	
-	public abstract int getHandValue(Player player);
+	public abstract int getHandValue();
 
 	@Override
 	public String toString() {
 		return "Hand [hand=" + hand + "]";
+	}
+
+	public List<Card> getHand() {
+		return hand;
+	}
+
+	public void setHand(List<Card> hand) {
+		this.hand = hand;
 	}
 	
 }

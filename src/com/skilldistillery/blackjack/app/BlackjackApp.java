@@ -1,6 +1,6 @@
 package com.skilldistillery.blackjack.app;
 
-import com.skilldistillery.blackjack.entities.Player;
+import com.skilldistillery.blackjack.entities.*;
 
 public class BlackjackApp {
 
@@ -10,6 +10,13 @@ public class BlackjackApp {
 	}
 	
 	public void run() {
+		Player dealer = new Dealer();
+		Player player = new Player();
+		
+		((Dealer) dealer).dealCards(player);
+		
+		((Dealer) dealer).viewKnownCards(dealer);
+		player.viewCards(player);
 		// A Dealer will deal cards
 		boolean adequateDeck = true;
 		do {
