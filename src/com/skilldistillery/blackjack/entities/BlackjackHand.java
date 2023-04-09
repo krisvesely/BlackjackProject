@@ -1,8 +1,5 @@
 package com.skilldistillery.blackjack.entities;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class BlackjackHand extends Hand {
 	private int handValue;
 
@@ -18,7 +15,7 @@ public class BlackjackHand extends Hand {
 
 	@Override
 	public int getHandValue() {
-		int handValue = 0;
+		handValue = 0;
 		for (Card card : getHand()) {
 			handValue += card.getValue();
 		}

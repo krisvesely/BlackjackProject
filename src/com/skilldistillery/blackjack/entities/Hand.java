@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Hand {
-	protected List<Card> hand; ////////////////////////////////////////////////////////
+	private List<Card> hand;
 
 	public Hand() {
 		hand = new ArrayList<>();
@@ -20,7 +20,6 @@ public abstract class Hand {
 
 	public abstract int getHandValue();
 
-	@Override
 	public String toString() {
 		return "Cards in hand: " + hand;
 	}

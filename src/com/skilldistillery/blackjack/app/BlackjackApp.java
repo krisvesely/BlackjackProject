@@ -13,30 +13,28 @@ public class BlackjackApp {
 
 	public void run() {
 		Scanner sc = new Scanner(System.in);
-		System.out.println("* * * * * * * * * * * * * * * * *    Welcome to the Blackjack App!   * * * * * * * * * * * * * * * * *");
-		System.out.println("* *    At the start of each round, the Dealer will deal two cards each, to you and to themself.    * *");
-		System.out.println("* Both of your cards will be dealt face up, but only the Dealer's second card will be dealt face up. *");
-		System.out.println("* * * * * * * *   Throughout play, Ace cards will have a fixed value of 11 (high).   * * * * * * * * *");
-				
+
+		welcomeMsg();
+
 		Player theDealer = new Dealer();
 		Player user = new Player();
 
 		boolean isPlaying = true;
 		do {
+			((Dealer) theDealer).getDeck().shuffle();
 			initialDeal(theDealer, user);
 			if (user.getBlackjackHand().isBlackjack()) {
-				System.out.println("\n* * * Blackjack! Congratulations - you won this round!");
-			} else if (user.getBlackjackHand().isBlackjack()) {
-				System.out.println("\n* * * Busted! Your hand exceeds 21. Round over.");
+				System.out.println("\n* * * Blackjack! Let's hope the Dealer's hand is less than 21.");
+				revealDealerHand(theDealer);
+			} else if (user.getBlackjackHand().isBust()) {
+				System.out.println("\n* * * Busted! Let's find out if the Dealer had better luck.");
+				revealDealerHand(theDealer);
 			} else {
-				boolean ifStay = hitOrStay(theDealer, user, sc);
-				if (ifStay) {
+				hitOrStay(theDealer, user, sc);
 				dealersTurn(theDealer);
-				}
-				if (theDealer.getBlackjackHand().getHandValue() < 21 && user.getBlackjackHand().getHandValue() < 21) {
-					determineWinner(theDealer, user);
-				}
 			}
+
+			determineWinner(theDealer, user);
 			isPlaying = anotherRoundIqry(theDealer, user, isPlaying, sc);
 			theDealer.getBlackjackHand().clear();
 			user.getBlackjackHand().clear();
@@ -47,17 +45,44 @@ public class BlackjackApp {
 		sc.close();
 	}
 
+	public void welcomeMsg() {
+		System.out.println(
+				"* * * * * * * * * * * * * * * * *    Welcome to the Blackjack App!   * * * * * * * * * * * * * * * * *");
+		System.out.println(
+				"* * * *  The objective is to obtain a hand value higher than the Dealer's, without busting 21. * * * *");
+		System.out.println(
+				"* *    At the start of each round, the Dealer will deal two cards each, to you and to themself.    * *");
+		System.out.println(
+				"* Both of your cards will be dealt face up, but only the Dealer's second card will be dealt face up. *");
+		System.out.println(
+				"* * * * * * * *   Throughout play, Ace cards will have a fixed value of 11 (high).   * * * * * * * * *");
+	}
+
 	public void initialDeal(Player theDealer, Player user) {
-		System.out.println("\nThe Dealer will now deal the first two cards to each Player.");
-		((Dealer) theDealer).dealInitialCards(user);
-		System.out.print("\n> Your hand: ");
-		user.viewCards();
-		((Dealer) theDealer).viewKnownCards();
+		((Dealer) theDealer).dealInitialCards(user, "first");
+		viewHand(user);
+		System.out.println("> The first card dealt to the Dealer's hand is face down.");
+		((Dealer) theDealer).dealInitialCards(user, "second");
+		viewHand(user);
+		((Dealer) theDealer).viewKnownCard();
 
 	}
 
-	public boolean hitOrStay(Player theDealer, Player user, Scanner sc) {
-		boolean stillInPlay = true;
+	public void viewHand(Player playerToViewHand) {
+		if (playerToViewHand instanceof Dealer) {
+			System.out.print("> Dealer's hand: ");
+		} else {
+			System.out.print("> Your hand: ");
+		}
+		playerToViewHand.viewCards();
+	}
+
+	public void revealDealerHand(Player theDealer) {
+		System.out.println("\nHere's the Dealer's complete hand as dealt:");
+		viewHand(theDealer);
+	}
+
+	public void hitOrStay(Player theDealer, Player user, Scanner sc) {
 		boolean keepLooping = true;
 		do {
 			System.out.println("\nDo you want to ...\n" + "1. Hit (receive another card from the deck) or, \n"
@@ -69,12 +94,16 @@ public class BlackjackApp {
 				switch (userResponse) {
 				case "1":
 				case "'1'":
-					System.out.println("\nDealing ...");
-					Card newUserCard = ((Dealer) theDealer).getDeck().dealCard();
-					user.getBlackjackHand().addCard(newUserCard);
-					System.out.print("> Your hand: ");
-					user.viewCards();
-					validResponse = true;
+					if (((Dealer) theDealer).getDeck().checkDeckSize() > 0) {
+						System.out.println("\nDealing ...");
+						((Dealer) theDealer).dealACard(user);
+						viewHand(user);
+						validResponse = true;
+					} else {
+						System.out.println("The deck is empty. You must Stay.");
+						validResponse = true;
+						keepLooping = false;
+					}
 					break;
 				case "2":
 				case "'2'":
@@ -87,23 +116,18 @@ public class BlackjackApp {
 				sc.nextLine();
 			} while (!validResponse);
 			if (user.getBlackjackHand().isBlackjack()) {
-				System.out.println("\n* * * Blackjack! You won this round!");
-				stillInPlay = false;
+				System.out.println("\n* * * Blackjack! Although the Dealer is still in the game.");
 				keepLooping = false;
-			}
-			else if (user.getBlackjackHand().isBust()) {
-				System.out.println("\n* * * Oh no, you busted your hand! The Dealer wins this round.");
-				stillInPlay = false;
+			} else if (user.getBlackjackHand().isBust()) {
+				System.out.println("\n* * * Oh no, your hand is bust! It's the Dealer's turn now.");
+
 				keepLooping = false;
 			}
 		} while (keepLooping);
-	return stillInPlay;
 	}
 
 	public void dealersTurn(Player theDealer) {
-		System.out.println("\nHere's the Dealer's complete hand as dealt:");
-		System.out.print("> Dealer's hand: ");
-		theDealer.viewCards();
+		revealDealerHand(theDealer);
 		boolean underSeventeen = true;
 		do {
 			if (theDealer.getBlackjackHand().getHandValue() >= 17) {
@@ -111,16 +135,13 @@ public class BlackjackApp {
 			} else {
 				System.out.println(
 						"\nSince the Dealer's hand value is less than 17, " + "the Dealer will draw another card.");
-				Card newDealerCard = ((Dealer) theDealer).getDeck().dealCard();
-				theDealer.getBlackjackHand().addCard(newDealerCard);
-				System.out.print("> Dealer's hand: ");
-				theDealer.viewCards();
+				((Dealer) theDealer).dealACard(theDealer);
+				viewHand(theDealer);
 				if (theDealer.getBlackjackHand().getHandValue() > 21) {
-					System.out.println("* * * The Dealer busted their hand. You win this round!");
+					System.out.println("* * * The Dealer busted their hand.");
 					underSeventeen = false;
-				}
-				else if (theDealer.getBlackjackHand().getHandValue() == 21) {
-					System.out.println("\n* * * The Dealer has Blackjack! You lost this round.");
+				} else if (theDealer.getBlackjackHand().getHandValue() == 21) {
+					System.out.println("\n* * * The Dealer has Blackjack!");
 					underSeventeen = false;
 				}
 			}
@@ -131,17 +152,33 @@ public class BlackjackApp {
 		System.out.println("\nLet's compare hands ...");
 		int dealerHandValue = theDealer.getBlackjackHand().getHandValue();
 		int userHandValue = user.getBlackjackHand().getHandValue();
-		if (userHandValue > dealerHandValue) {
-			System.out.println("* * * Congratulations! You won this round!");
-		} else if (dealerHandValue > userHandValue) {
-			System.out.println("* * * The Dealer wins this round. Better luck next time!");
+		if ((userHandValue <= 21) && (dealerHandValue <= 21)) {
+			if (userHandValue > dealerHandValue) {
+				System.out.println("* * * Congratulations! You won this round with " + userHandValue
+						+ " points compared to the Dealer's " + dealerHandValue + " points!");
+			} else if (dealerHandValue > userHandValue) {
+				System.out.println("* * * The Dealer wins this round with " + dealerHandValue + " points, besting your "
+						+ userHandValue + " points. Better luck next time!");
+			} else {
+				if (userHandValue == 21) {
+					System.out.println("Both you and the Dealer tied with 21!");
+				} else {
+					System.out.println("* * * It's a tie with " + userHandValue + ". Round over.");
+				}
+			}
 		} else {
-			System.out.println("* * * It's a tie. Round over.");
+			if ((userHandValue < dealerHandValue) && (userHandValue <= 21)) {
+				System.out.println("You won since only the Dealer bust!");
+			} else if ((dealerHandValue < userHandValue) && (dealerHandValue <= 21)) {
+				System.out.println("You lost this round as the only Player to bust.");
+			} else {
+				System.out.println("You and the Dealer are both bust! This round is a tie.");
+			}
 		}
 	}
 
 	public boolean anotherRoundIqry(Player theDealer, Player user, boolean isPlaying, Scanner sc) {
-		if (((Dealer) theDealer).getDeck().checkDeckSize() > 6) {
+		if (((Dealer) theDealer).getDeck().checkDeckSize() > 12) {
 			boolean validResponse = false;
 			do {
 				System.out.print("Do you want to play another round? Y/N: ");

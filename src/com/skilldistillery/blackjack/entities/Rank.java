@@ -15,13 +15,8 @@ public enum Rank {
 	KING(10, "King"),
 	ACE(11, "Ace");
 	
-
 	final private int rank;
 	final private String name;
-	
-//	Rank(int theRank) {
-//		this.rank = theRank;
-//	}
 	
 	Rank(int theRank, String theName) {
 		this.rank = theRank;
